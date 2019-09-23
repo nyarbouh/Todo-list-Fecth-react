@@ -9,6 +9,20 @@ export default class Fields extends React.Component {
 			list: [""]
 		};
 	}
+	componentDidMount() {
+		fetch("https://assets.breatheco.de/apis/fake/todos/user/nyarbouh")
+			.then(response => {
+				if (response.ok) {
+					return response.json();
+				} else {
+					console.log("Bad response");
+				}
+			})
+			.then(data => {
+				this.setState({ list: data });
+			})
+			.catch(error => console.log(error));
+	}
 	deleteTodo(e) {
 		this.setState({
 			list: this.state.list.filter(index => index.list !== e)
@@ -22,7 +36,7 @@ export default class Fields extends React.Component {
 						className="far fa-trash-alt"
 						onClick={() => this.deleteTodo(index.list)}
 					/>
-					{blue}
+					{blue.label}
 				</li>
 			);
 		});
@@ -44,6 +58,13 @@ export default class Fields extends React.Component {
 				/>
 
 				<ul className="list-group">{arr}</ul>
+				<div className="footer">
+					<p>
+						You have&nbsp;
+						{this.state.list.length}
+						&nbsp;tasks to get done
+					</p>
+				</div>
 			</div>
 		);
 	}
